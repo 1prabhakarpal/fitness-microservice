@@ -1,0 +1,88 @@
+# ================================
+# Java
+# ================================
+*.class
+*.log
+*.jar
+*.war
+*.ear
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
+.gradle-build/
+
+# ================================
+# Eclipse
+# ================================
+*.pydevproject
+.project
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders/
+.classpath
+
+# ================================
+# IntelliJ IDEA (if imported)
+# ================================
+.idea/
+*.iml
+*.iws
+out/
+
+# ================================
+# Logs and temp files
+# ================================
+logs/
+*.log
+*.out
+*.pid
+*.seed
+*.pid.lock
+
+# ================================
+# OS generated files
+# ================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ================================
+# Spring Boot specific
+# ================================
+.springBeans
+*.db
+*.h2.db
+*.mv.db
+
+# ================================
+# VS Code (optional)
+# ================================
+.vscode/
+.history/
+
+# ================================
+# Environment files
+# ================================
+.env
+.env.*
