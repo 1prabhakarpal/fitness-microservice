@@ -1,5 +1,7 @@
 package com.fitness.userservice.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.fitness.userservice.dto.RegisterRequest;
@@ -15,8 +17,8 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	
-	public UserResponse getUserProfile(String userId) {
-	    return userRepository.findById(userId)
+	public UserResponse getUserProfile(String emailId) {
+	    return userRepository.findByEmail(emailId)
 	            .map(user -> new UserResponse(
 	                    user.getId(),
 	                    user.getFirstName(),
@@ -25,7 +27,7 @@ public class UserService {
 	                    user.getCreatedAt(),
 	                    user.getUpdatedAt()
 	            ))
-	            .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+	            .orElseThrow(() -> new RuntimeException("User not found with email id: " + emailId));
 	}
 
 	public UserResponse registerUser(RegisterRequest registerRequest) {
@@ -50,6 +52,20 @@ public class UserService {
 				savedUser.getCreatedAt(),
 				savedUser.getUpdatedAt()
 				);
+	}
+
+	public List<UserResponse> getAllUsers() {
+		// TODO Auto-generated method stub
+		return userRepository.findAll().stream()
+				.map(user -> new UserResponse(
+						user.getId(),
+						user.getFirstName(),
+						user.getLastName(),
+						user.getEmail(),
+						user.getCreatedAt(),
+						user.getUpdatedAt()
+						))
+				.toList();
 	}
 
 }

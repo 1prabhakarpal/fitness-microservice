@@ -1,8 +1,11 @@
 package com.fitness.userservice.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,16 +29,16 @@ public class UserController {
 	
 	private final UserService userService;
 	
-	@GetMapping("/{userId}")
+	@GetMapping("/{emailId}")
 	@Operation(summary = "Get User Profile", description = "Retrieve user profile information by user ID")
 	@ApiResponses(value = {
 	    @ApiResponse(responseCode = "200", description = "Successful retrieval of user profile"),
 	    @ApiResponse(responseCode = "404", description = "User not found")
 	})
-	public ResponseEntity<UserResponse> getUserProfile(@PathVariable String userId) {
+	public ResponseEntity<UserResponse> getUserProfile(@PathVariable String emailId) {
 		
 		try {
-			return ResponseEntity.ok(userService.getUserProfile(userId));
+			return ResponseEntity.ok(userService.getUserProfile(emailId));
 		} catch (RuntimeException e) {
 		    return ResponseEntity.notFound().build();
 		}
@@ -47,9 +50,15 @@ public class UserController {
 	    @ApiResponse(responseCode = "200", description = "Successful user registration"),
 	    @ApiResponse(responseCode = "400", description = "Invalid input or email already in use")
 	})
-	@GetMapping("/register")
+	@PostMapping("/register")
 	public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
 		
 		return ResponseEntity.ok(userService.registerUser(registerRequest));
+	}
+	
+	@GetMapping("/list")
+	public ResponseEntity<List<UserResponse>> getAllUsers() {
+	    
+	    return ResponseEntity.ok(userService.getAllUsers());
 	}
 }
