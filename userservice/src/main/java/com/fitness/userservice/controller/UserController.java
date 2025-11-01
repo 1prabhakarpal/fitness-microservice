@@ -7,27 +7,49 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fitness.userservice.dto.UserRequest;
+import com.fitness.userservice.dto.RegisterRequest;
 import com.fitness.userservice.dto.UserResponse;
 import com.fitness.userservice.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Tag(name = "User Service", description = "APIs for user registration and profile retrieval")
 public class UserController {
 	
 	private final UserService userService;
 	
 	@GetMapping("/{userId}")
+	@Operation(summary = "Get User Profile", description = "Retrieve user profile information by user ID")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "200", description = "Successful retrieval of user profile"),
+	    @ApiResponse(responseCode = "404", description = "User not found")
+	})
 	public ResponseEntity<UserResponse> getUserProfile(@PathVariable String userId) {
-		return ResponseEntity.ok(userService.getUserProfile(userId));
+		
+		try {
+			return ResponseEntity.ok(userService.getUserProfile(userId));
+		} catch (RuntimeException e) {
+		    return ResponseEntity.notFound().build();
+		}
+		
 	}
 	
+	@Operation(summary = "Register User", description = "Register a new user with the provided details")
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "200", description = "Successful user registration"),
+	    @ApiResponse(responseCode = "400", description = "Invalid input or email already in use")
+	})
 	@GetMapping("/register")
-	public ResponseEntity<UserResponse> registerUser(@RequestBody UserRequest userRequest) {
-		// Placeholder implementation
-		return null;
+	public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
+		
+		return ResponseEntity.ok(userService.registerUser(registerRequest));
 	}
 }

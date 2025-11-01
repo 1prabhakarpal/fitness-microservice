@@ -16,9 +16,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 @Entity
 @Table(name = "users")
 @DynamicUpdate
@@ -27,8 +29,8 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String id;
-	private String first_name;
-	private String last_name;
+	private String firstName;
+	private String lastName;
 	
 	@Column(unique = true,nullable = false)
 	private String email;
@@ -37,13 +39,14 @@ public class User {
 	private String password;
 	
 	@Enumerated(EnumType.STRING)
+	@Builder.Default
 	private UserRole role = UserRole.USER;
 	
 	@CreationTimestamp
-	private LocalDateTime created_at;
+	private LocalDateTime createdAt;
 	
 	@UpdateTimestamp
-	private LocalDateTime updated_at;
+	private LocalDateTime updatedAt;
 	
 	
 }
