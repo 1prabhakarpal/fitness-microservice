@@ -86,3 +86,14 @@ $RECYCLE.BIN/
 # ================================
 .env
 .env.*
+
+
+# Ignore MySQL runtime/data files
+*/data/
+*.sock
+*.pid
+*.err
+*.ibd
+*.ib_logfile*
+auto.cnf
+binlog.*
