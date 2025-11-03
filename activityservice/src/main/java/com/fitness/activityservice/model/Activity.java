@@ -30,7 +30,7 @@ public class Activity {
   private LocalDateTime endTime;
 
   @Field("metrics")
-  private Map<String, String> metadata;
+  private Map<String, String> additionalMetrics;
 
   @CreatedDate
   private LocalDateTime createdAt;

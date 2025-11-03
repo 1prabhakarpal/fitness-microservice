@@ -6,6 +6,6 @@ import com.fitness.activityservice.enums.ActivityType;
 
 public record ActivityResponse(String id, String userId, ActivityType activityType,
     Integer duration, Integer caloriesBurned, LocalDateTime startTime, LocalDateTime endTime,
-    Map<String, String> metadata, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    Map<String, String> additionalMetrics, LocalDateTime createdAt, LocalDateTime updatedAt) {
 
 }
