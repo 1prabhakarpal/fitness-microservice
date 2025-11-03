@@ -28,7 +28,7 @@ public class ActiviryController {
 
   private final ActivityService activityService;
 
-  @PostMapping
+  @PostMapping("/track")
   @Operation(summary = "Track a new activity",
       description = "Tracks a new fitness activity for a user")
   @ApiResponses(
@@ -46,7 +46,7 @@ public class ActiviryController {
 
   @Operation(summary = "Get user activities",
       description = "Retrieves all fitness activities for a specific user")
-  @GetMapping
+  @GetMapping("/user")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Activities retrieved successfully"),
       @ApiResponse(responseCode = "500", description = "Internal server error")})
