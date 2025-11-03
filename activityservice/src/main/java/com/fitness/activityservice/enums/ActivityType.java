@@ -1,0 +1,5 @@
+package com.fitness.activityservice.enums;
+
+public enum ActivityType {
+  RUNNING, CYCLING, SWIMMING, WALKING, YOGA, STRENGTH_TRAINING, HIIT, DANCE, PILATES, ROWING, ELLIPTICAL, CARDIO, OTHER, STRETCHING
+}
