@@ -1,5 +1,6 @@
 package com.fitness.activityservice.service;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 import com.fitness.activityservice.dto.ActivityRequest;
 import com.fitness.activityservice.dto.ActivityResponse;
@@ -35,6 +36,30 @@ public class ActivityService {
         savedActivity.getStartTime(), savedActivity.getEndTime(),
         savedActivity.getAdditionalMetrics(), savedActivity.getCreatedAt(),
         savedActivity.getUpdatedAt());
+  }
+
+
+  public List<ActivityResponse> getUserActivities(String userId) {
+    List<Activity> activities = activityRepository.findByUserId(userId);
+    log.info("Retrieved {} activities for user {}", activities.size(), userId);
+    return activities
+        .stream()
+          .map(activity -> new ActivityResponse(activity.getId(), activity.getUserId(),
+              activity.getType(), activity.getDuration(), activity.getCaloriesBurned(),
+              activity.getStartTime(), activity.getEndTime(), activity.getAdditionalMetrics(),
+              activity.getCreatedAt(), activity.getUpdatedAt()))
+          .toList();
+  }
+
+
+  public ActivityResponse getActivityById(String activityId) {
+    Activity activity = activityRepository.findById(activityId).orElse(null);
+    log.info("Retrieved activity by id {}: {}", activityId, activity);
+    return activity == null ? null
+        : new ActivityResponse(activity.getId(), activity.getUserId(), activity.getType(),
+            activity.getDuration(), activity.getCaloriesBurned(), activity.getStartTime(),
+            activity.getEndTime(), activity.getAdditionalMetrics(), activity.getCreatedAt(),
+            activity.getUpdatedAt());
   }
 
 }

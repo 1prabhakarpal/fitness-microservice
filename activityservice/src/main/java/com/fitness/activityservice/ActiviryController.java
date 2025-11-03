@@ -1,8 +1,12 @@
 package com.fitness.activityservice;
 
+import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.fitness.activityservice.dto.ActivityRequest;
@@ -36,6 +40,44 @@ public class ActiviryController {
       return ResponseEntity.ok(activityService.trackActivity(request));
     } catch (Exception e) {
       log.error("Error tracking activity: {}", e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+  }
+
+  @Operation(summary = "Get user activities",
+      description = "Retrieves all fitness activities for a specific user")
+  @GetMapping
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Activities retrieved successfully"),
+      @ApiResponse(responseCode = "500", description = "Internal server error")})
+  public ResponseEntity<List<ActivityResponse>> getUserActivities(
+      @RequestHeader("X-User-Id") String userId) {
+    // Implementation goes here
+    try {
+      List<ActivityResponse> activities = activityService.getUserActivities(userId);
+      return ResponseEntity.ok(activities);
+    } catch (Exception e) {
+      log.error("Error retrieving activities: {}", e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+  }
+
+  @GetMapping("/{activityId}")
+  @Operation(summary = "Get activity by ID",
+      description = "Retrieves a specific fitness activity by its ID")
+  @ApiResponses(
+      value = {@ApiResponse(responseCode = "200", description = "Activity retrieved successfully"),
+          @ApiResponse(responseCode = "500", description = "Internal server error"),
+          @ApiResponse(responseCode = "404", description = "Activity not found")})
+  public ResponseEntity<ActivityResponse> getActivityById(@PathVariable String activityId) {
+    try {
+      ActivityResponse activity = activityService.getActivityById(activityId);
+      if (activity == null) {
+        return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.ok(activity);
+    } catch (Exception e) {
+      log.error("Error retrieving activity by ID: {}", e.getMessage());
       return ResponseEntity.status(500).build();
     }
   }
