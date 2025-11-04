@@ -15,9 +15,14 @@ import lombok.extern.log4j.Log4j2;
 public class ActivityService {
 
   private final ActivityRepository activityRepository;
-
+  private final UserValidationService userValidationService;
 
   public ActivityResponse trackActivity(ActivityRequest request) {
+
+    if (!userValidationService.isUserValid(request.userId())) {
+      log.warn("Attempted to track activity for invalid userId: {}", request.userId());
+      throw new RuntimeException("Invalid user ID: " + request.userId());
+    }
 
     Activity activity = Activity
         .builder()

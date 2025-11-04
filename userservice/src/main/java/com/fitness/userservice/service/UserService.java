@@ -64,8 +64,15 @@ public class UserService {
 						user.getEmail(),
 						user.getCreatedAt(),
 						user.getUpdatedAt()
-						))
+						)) 
 				.toList();
 	}
+
+  public boolean validateUser(String userId) {
+    if(userRepository.existsById(userId)) {
+      return true;
+    }
+    return false;
+  }
 
 }
