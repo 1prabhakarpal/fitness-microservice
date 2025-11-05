@@ -1,12 +1,20 @@
 spring:
-    application:
-      name: ai-service
+  application:
+    name: ai-service
+
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      username: root
+      password: password
+      database: fitness-recommendation
+      authentication-database: admin
+
+server:
+  port: 8083
 
 eureka:
-    client:
-        service-url:
-            defaultZone: http://localhost:8761/eureka/
-            
-            
-server:
-    port: 8083
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
