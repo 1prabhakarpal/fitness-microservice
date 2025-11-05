@@ -1,6 +1,8 @@
 package com.fitness.activityservice.service;
 
 import java.util.List;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.fitness.activityservice.dto.ActivityRequest;
 import com.fitness.activityservice.dto.ActivityResponse;
@@ -16,6 +18,12 @@ public class ActivityService {
 
   private final ActivityRepository activityRepository;
   private final UserValidationService userValidationService;
+  private final RabbitTemplate rabbitTemplate;
+
+  @Value("${rabbitmq.exchange.name}")
+  private String exchange;
+  @Value("${rabbitmq.routing.key}")
+  private String routingKey;
 
   public ActivityResponse trackActivity(ActivityRequest request) {
 
@@ -35,6 +43,17 @@ public class ActivityService {
           .additionalMetrics(request.additionalMetrics())
           .build();
     Activity savedActivity = activityRepository.save(activity);
+
+    // Publish event to RabbitMQ for AI processing
+    try {
+      rabbitTemplate.convertAndSend(exchange, routingKey, savedActivity);
+      log.info("Published activity {} to RabbitMQ for AI processing", savedActivity.getId());
+    } catch (Exception e) {
+      log
+          .error("Failed to publish activity {} to RabbitMQ: {}", savedActivity.getId(),
+                 e.getMessage());
+    }
+
     log.info("Tracked activity: {}", savedActivity);
     return new ActivityResponse(savedActivity.getId(), savedActivity.getUserId(),
         savedActivity.getType(), savedActivity.getDuration(), savedActivity.getCaloriesBurned(),
